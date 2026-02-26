@@ -343,7 +343,7 @@ export default function App() {
           
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4 leading-none uppercase">
             O que acontece no <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">Red Room</span>,<br />
-            fica no <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">Red Room</span>. 🤫
+            fica no <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">Red Room</span>.
           </h1>
           
           <p className="text-lg md:text-xl text-zinc-400 max-w-lg mx-auto leading-relaxed">
@@ -393,17 +393,18 @@ export default function App() {
                   {/* Scarcity */}
                   <ScarcityBar />
                   
-                  <div 
-                    role="button"
+                  <a 
+                    href="https://t.me/xvazadosBrasil"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.nativeEvent.stopImmediatePropagation();
-                      setShowPayment(true);
                     }}
                     className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold text-lg py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all duration-300 animate-pulse uppercase tracking-wide transform hover:-translate-y-1 cursor-pointer"
                   >
                     Liberar meu acesso no Telegram 😈
-                  </div>
+                  </a>
                   
                   <div className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
                     <Shield size={12} />
