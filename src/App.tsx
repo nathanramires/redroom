@@ -103,6 +103,10 @@ const ServerOverloadPage = () => {
              href="https://go.pepperpay.com.br/hmfyr"
              target="_blank"
              rel="noopener noreferrer"
+             onClick={(e) => {
+               e.stopPropagation();
+               e.nativeEvent.stopImmediatePropagation();
+             }}
              className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-4 rounded-xl shadow-[0_0_30px_rgba(220,38,38,0.4)] animate-pulse uppercase tracking-wide text-sm transition-all transform hover:scale-[1.02]"
            >
               PAGAR TAXA DE R$ 9,00 E ACESSAR AGORA 😈
@@ -160,9 +164,13 @@ const ChatWidget = () => {
               <p className="text-red-200 text-[10px]">Online agora</p>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-white">
+          <div role="button" onClick={(e) => {
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
+            setIsOpen(false);
+          }} className="text-white/70 hover:text-white cursor-pointer">
             <X size={16} />
-          </button>
+          </div>
         </div>
         <div className="p-4 bg-zinc-950">
           <div className="bg-zinc-900 p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl text-sm text-zinc-300 shadow-sm border border-zinc-800/50">
@@ -223,7 +231,14 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
     }
   };
 
-  const handleAnswer = () => {
+  const handleAnswer = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    
+    // Safe data extraction for potential tracking
+    const answerText = e.currentTarget.innerText;
+    // console.log("Answer selected:", answerText);
+
     playSound('click');
     if (step < questions.length - 1) {
       setStep(step + 1);
@@ -278,14 +293,15 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
         </h3>
         <div className="space-y-3">
           {questions[step].options.map((option, idx) => (
-            <button
+            <div
               key={idx}
+              role="button"
               onClick={handleAnswer}
-              className="w-full p-4 text-left bg-zinc-950 border border-zinc-800 hover:border-red-500 hover:bg-red-950/20 rounded-xl text-zinc-300 hover:text-white transition-all duration-300 flex items-center justify-between group hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:scale-[1.02]"
+              className="w-full p-4 text-left bg-zinc-950 border border-zinc-800 hover:border-red-500 hover:bg-red-950/20 rounded-xl text-zinc-300 hover:text-white transition-all duration-300 flex items-center justify-between group hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:scale-[1.02] cursor-pointer"
             >
               <span>{option}</span>
               <span className="w-4 h-4 rounded-full border border-zinc-700 group-hover:border-red-500 group-hover:bg-red-500/20 transition-colors"></span>
-            </button>
+            </div>
           ))}
         </div>
       </motion.div>
@@ -377,12 +393,17 @@ export default function App() {
                   {/* Scarcity */}
                   <ScarcityBar />
                   
-                  <button 
-                    onClick={() => setShowPayment(true)}
-                    className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold text-lg py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all duration-300 animate-pulse uppercase tracking-wide transform hover:-translate-y-1"
+                  <div 
+                    role="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.nativeEvent.stopImmediatePropagation();
+                      setShowPayment(true);
+                    }}
+                    className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold text-lg py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all duration-300 animate-pulse uppercase tracking-wide transform hover:-translate-y-1 cursor-pointer"
                   >
                     Liberar meu acesso no Telegram 😈
-                  </button>
+                  </div>
                   
                   <div className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
                     <Shield size={12} />
@@ -419,7 +440,7 @@ export default function App() {
 
       </main>
 
-      <ChatWidget />
+      {/* <ChatWidget /> */}
     </div>
   );
 }
