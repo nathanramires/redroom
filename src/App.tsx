@@ -1,8 +1,118 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Lock, CheckCircle, MessageCircle, X, Shield, AlertTriangle } from 'lucide-react';
+import { Lock, CheckCircle, MessageCircle, X, Shield, AlertTriangle, Server, Cloud, Users } from 'lucide-react';
 
 // --- Components ---
+
+const ScarcityBar = () => (
+  <div className="w-full bg-red-950/20 border border-red-900/50 rounded-xl p-3 mb-6 flex items-center justify-center gap-2 animate-pulse">
+    <Users className="w-4 h-4 text-red-500" />
+    <span className="text-zinc-200 font-medium text-xs md:text-sm">
+      Apenas <span className="text-red-500 font-bold">7</span> convites restantes para o grupo privado
+    </span>
+  </div>
+);
+
+const ServerOverloadPage = () => {
+  const [timeLeft, setTimeLeft] = useState(180); // 3 minutes
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-red-500 font-mono flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Scanline effect overlay */}
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06)_1px,transparent_1px),linear-gradient(rgba(255,0,0,0.06)_1px,transparent_1px)] bg-[length:100%_4px,20px_20px,20px_20px] z-0"></div>
+      
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-md bg-zinc-950 border border-red-600/30 p-6 rounded-xl shadow-[0_0_50px_rgba(220,38,38,0.15)] relative z-10"
+      >
+        {/* Header Alert */}
+        <div className="flex items-start gap-4 mb-8 border-b border-red-900/30 pb-6">
+          <AlertTriangle className="w-10 h-10 text-red-600 animate-pulse shrink-0" />
+          <div>
+            <h1 className="text-lg font-bold tracking-tight text-red-500 leading-tight mb-1">
+              CONEXÃO INTERROMPIDA:<br />ALTA DEMANDA
+            </h1>
+            <p className="text-[10px] text-red-400/60 uppercase tracking-widest">Erro de Sistema 503</p>
+          </div>
+        </div>
+
+        {/* Icons */}
+        <div className="flex justify-center gap-12 mb-8 opacity-80">
+          <div className="flex flex-col items-center gap-2">
+            <Server className="w-8 h-8 text-zinc-500" />
+            <span className="text-[10px] text-zinc-600 uppercase">Server</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Cloud className="w-8 h-8 text-red-500 animate-pulse" />
+            <span className="text-[10px] text-red-500 uppercase">Cloud</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Lock className="w-8 h-8 text-zinc-500" />
+            <span className="text-[10px] text-zinc-600 uppercase">Secure</span>
+          </div>
+        </div>
+
+        {/* Diagnostic Text */}
+        <div className="space-y-4 text-sm text-zinc-400 font-mono mb-8 border-l-2 border-red-900/50 pl-4">
+          <p>
+            <span className="text-red-500 font-bold">&gt; DIAGNÓSTICO:</span> Detectamos <span className="text-white font-bold">1.429 usuários</span> tentando acessar o servidor Red Room simultaneamente.
+          </p>
+          <p>
+            Para evitar a queda total do sistema e manter a velocidade do Telegram VIP, o acesso gratuito foi pausado temporariamente.
+          </p>
+        </div>
+
+        {/* Solution */}
+        <div className="bg-zinc-900/50 border border-red-500/10 p-5 rounded-lg mb-8">
+          <p className="text-xs text-red-400 mb-3 uppercase tracking-widest font-bold">Solução Técnica:</p>
+          <p className="text-zinc-400 text-sm mb-4 leading-relaxed">
+            Para liberar seu acesso imediato, estamos ativando chaves de API individuais. O custo de manutenção dessa infraestrutura é de <span className="line-through text-zinc-600">R$ 97,90</span>, mas para os usuários atuais, aplicamos um subsídio emergencial.
+          </p>
+          <p className="text-white text-sm font-medium border-t border-zinc-800 pt-3 mt-3">
+             Pague apenas a taxa de manutenção vitalícia de <span className="text-red-500 font-bold">R$ 9,00</span> e receba seu link exclusivo no Telegram agora.
+          </p>
+        </div>
+
+        {/* Urgency & CTA */}
+        <div className="text-center">
+           <div className="mb-6">
+              <p className="text-[10px] text-red-500/70 uppercase tracking-widest mb-1">Reserva de Vaga</p>
+              <div className={`text-4xl font-mono font-bold tabular-nums tracking-widest transition-colors duration-300 ${timeLeft < 60 ? 'text-red-500 animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]' : 'text-white'}`}>
+                  {formatTime(timeLeft)}
+              </div>
+              <p className="text-[10px] text-zinc-600 mt-2">
+                  Após o tempo acabar, sua vaga será passada para o próximo da fila.
+              </p>
+           </div>
+
+           <a 
+             href="https://go.pepperpay.com.br/hmfyr"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-4 rounded-xl shadow-[0_0_30px_rgba(220,38,38,0.4)] animate-pulse uppercase tracking-wide text-sm transition-all transform hover:scale-[1.02]"
+           >
+              PAGAR TAXA DE R$ 9,00 E ACESSAR AGORA 😈
+           </a>
+        </div>
+
+      </motion.div>
+    </div>
+  );
+};
 
 const ScarcityCounter = () => {
   return (
@@ -64,27 +174,6 @@ const ChatWidget = () => {
   );
 };
 
-const BlurredImage = ({ delay = 0 }: { delay?: number }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ delay, duration: 0.8, ease: "easeOut" }}
-    className="relative aspect-[3/4] rounded-xl overflow-hidden border border-zinc-800 group"
-  >
-    <img 
-      src={`https://picsum.photos/seed/${Math.random()}/400/600`} 
-      alt="Exclusive Content" 
-      className="w-full h-full object-cover blur-md scale-110 group-hover:scale-105 transition-transform duration-700 opacity-60"
-    />
-    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-      <div className="bg-black/60 p-3 rounded-full border border-red-500/30 backdrop-blur-sm shadow-[0_0_15px_rgba(220,38,38,0.3)]">
-        <Lock className="text-red-500 w-6 h-6" />
-      </div>
-    </div>
-  </motion.div>
-);
-
 const Quiz = ({ onComplete }: { onComplete: () => void }) => {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -104,7 +193,38 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
     }
   ];
 
+  const playSound = (type: 'click' | 'success') => {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    if (type === 'click') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } else if (type === 'success') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.5);
+    }
+  };
+
   const handleAnswer = () => {
+    playSound('click');
     if (step < questions.length - 1) {
       setStep(step + 1);
       setProgress(((step + 1) / questions.length) * 60); // Fake progress logic
@@ -117,6 +237,7 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
         setProgress(p);
         if (p >= 95) {
           clearInterval(interval);
+          playSound('success');
           setTimeout(onComplete, 500);
         }
       }, 30);
@@ -160,7 +281,7 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
             <button
               key={idx}
               onClick={handleAnswer}
-              className="w-full p-4 text-left bg-zinc-950 border border-zinc-800 hover:border-red-500/50 hover:bg-red-950/10 rounded-xl text-zinc-300 hover:text-white transition-all duration-200 flex items-center justify-between group"
+              className="w-full p-4 text-left bg-zinc-950 border border-zinc-800 hover:border-red-500 hover:bg-red-950/20 rounded-xl text-zinc-300 hover:text-white transition-all duration-300 flex items-center justify-between group hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:scale-[1.02]"
             >
               <span>{option}</span>
               <span className="w-4 h-4 rounded-full border border-zinc-700 group-hover:border-red-500 group-hover:bg-red-500/20 transition-colors"></span>
@@ -174,6 +295,11 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
 
 export default function App() {
   const [accessGranted, setAccessGranted] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+
+  if (showPayment) {
+    return <ServerOverloadPage />;
+  }
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-red-500/30 overflow-x-hidden">
@@ -210,13 +336,13 @@ export default function App() {
         </motion.div>
 
         {/* Main Content Area */}
-        <div className="w-full max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="w-full max-w-md mx-auto relative z-20">
           
-          {/* Left/Top: Quiz or CTA */}
+          {/* Quiz or CTA */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full"
           >
@@ -235,25 +361,28 @@ export default function App() {
                   key="cta"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-zinc-900/80 border border-red-900/30 p-8 rounded-2xl backdrop-blur-md text-center shadow-[0_0_50px_rgba(220,38,38,0.1)]"
+                  className="bg-zinc-900/80 border border-red-900/30 p-6 rounded-2xl backdrop-blur-md text-center shadow-[0_0_50px_rgba(220,38,38,0.1)]"
                 >
-                  <div className="mb-6 flex justify-center">
-                     <ScarcityCounter />
+                  {/* Status Header */}
+                  <div className="bg-black/40 border border-zinc-800 rounded-xl p-4 mb-6">
+                      <div className="flex items-center justify-center gap-2 mb-1">
+                          <div className="w-5 h-5 bg-green-600 rounded flex items-center justify-center shadow-[0_0_10px_rgba(22,163,74,0.5)]">
+                              <CheckCircle className="w-3.5 h-3.5 text-white" strokeWidth={3} />
+                          </div>
+                          <h2 className="text-lg md:text-xl font-bold text-red-500 tracking-tight">Acesso Liberado!</h2>
+                      </div>
+                      <p className="text-zinc-400 text-xs md:text-sm">Seu convite VIP está pronto abaixo</p>
                   </div>
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="text-green-500 w-8 h-8" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-white mb-2">Acesso Liberado!</h2>
-                  <p className="text-zinc-400 mb-8">Seu convite expira em 2 minutos.</p>
+
+                  {/* Scarcity */}
+                  <ScarcityBar />
                   
-                  <a 
-                    href="https://telegram.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <button 
+                    onClick={() => setShowPayment(true)}
                     className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold text-lg py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all duration-300 animate-pulse uppercase tracking-wide transform hover:-translate-y-1"
                   >
                     Liberar meu acesso no Telegram 😈
-                  </a>
+                  </button>
                   
                   <div className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
                     <Shield size={12} />
@@ -263,14 +392,6 @@ export default function App() {
               )}
             </AnimatePresence>
           </motion.div>
-
-          {/* Right/Bottom: Visuals */}
-          <div className="grid grid-cols-2 gap-3 md:gap-4 opacity-80">
-             <BlurredImage delay={0.1} />
-             <BlurredImage delay={0.2} />
-             <BlurredImage delay={0.3} />
-             <BlurredImage delay={0.4} />
-          </div>
         </div>
 
         {/* Footer */}
