@@ -309,9 +309,65 @@ const Quiz = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const PresellPage = ({ onContinue }: { onContinue: () => void }) => {
+  return (
+    <div className="min-h-screen bg-black text-white font-sans flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-red-900/10 blur-[120px] rounded-full mix-blend-screen"></div>
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-md bg-zinc-950 border border-zinc-800 p-8 rounded-2xl shadow-2xl relative z-10 text-center"
+      >
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-red-600/10 rounded-full flex items-center justify-center border border-red-500/20">
+            <Shield className="w-8 h-8 text-red-500" />
+          </div>
+        </div>
+
+        <h1 className="text-2xl font-bold mb-4 text-white">Acesso ao Grupo VIP</h1>
+        
+        <p className="text-zinc-400 mb-8 leading-relaxed">
+          Você foi convidado para participar da nossa comunidade exclusiva. <br/>
+          Por favor, confirme que você concorda com as regras de participação.
+        </p>
+
+        <div 
+          role="button"
+          onClick={onContinue}
+          className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all transform hover:scale-[1.02] cursor-pointer mb-4 uppercase tracking-wide text-sm"
+        >
+          Concordo e Quero Entrar
+        </div>
+
+        <a 
+          href="https://google.com"
+          className="block w-full bg-zinc-900 hover:bg-zinc-800 text-zinc-400 font-medium py-4 px-6 rounded-xl transition-colors text-sm"
+        >
+          Não concordo
+        </a>
+
+        <div className="mt-8 pt-6 border-t border-zinc-900 flex justify-center gap-4 text-[10px] text-zinc-600 uppercase tracking-widest">
+          <span>Seguro</span>
+          <span>Privado</span>
+          <span>Discreto</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 export default function App() {
+  const [showPresell, setShowPresell] = useState(true);
   const [accessGranted, setAccessGranted] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+
+  if (showPresell) {
+    return <PresellPage onContinue={() => setShowPresell(false)} />;
+  }
 
   if (showPayment) {
     return <ServerOverloadPage />;
