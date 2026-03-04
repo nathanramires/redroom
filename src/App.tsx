@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, CheckCircle, MessageCircle, X, Shield, AlertTriangle, Server, Cloud, Users } from 'lucide-react';
 
@@ -450,14 +450,14 @@ export default function App() {
                   <ScarcityBar />
                   
                   <a 
-                    href="https://t.me/xvazadosBrasil"
+                    href="https://go.tribopay.com.br/bbtqbh3sti"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.nativeEvent.stopImmediatePropagation();
                       if ((window as any).fbq) {
-                        (window as any).fbq('track', 'Purchase', {value: 15.00, currency: 'BRL'});
+                        (window as any).fbq('track', 'InitiateCheckout', {value: 15.00, currency: 'BRL'});
                       }
                     }}
                     className="block w-full bg-red-600 hover:bg-red-500 text-white font-bold text-lg py-5 px-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.6)] hover:shadow-[0_0_30px_rgba(220,38,38,0.8)] transition-all duration-300 animate-pulse uppercase tracking-wide transform hover:-translate-y-1 cursor-pointer"
